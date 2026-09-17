@@ -133,16 +133,29 @@ export default function Navbar() {
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
       e.preventDefault();
       setActiveSection(href);
-      requestedSectionRef.current = href;
-      if (requestTimeoutRef.current) {
-        window.clearTimeout(requestTimeoutRef.current);
-      }
-      requestTimeoutRef.current = window.setTimeout(() => {
-        requestedSectionRef.current = null;
-      }, 1200);
       setIsMobileOpen(false);
       const target = document.querySelector(href);
-      if (target) target.scrollIntoView({ behavior: "smooth" });
+      if (target) {
+        const targetTop = target.getBoundingClientRect().top;
+        const isAlreadyVisible =
+          targetTop > -window.innerHeight * 0.2 &&
+          targetTop < window.innerHeight * 0.8;
+
+        if (requestTimeoutRef.current) {
+          window.clearTimeout(requestTimeoutRef.current);
+        }
+
+        if (isAlreadyVisible) {
+          requestedSectionRef.current = null;
+        } else {
+          requestedSectionRef.current = href;
+          requestTimeoutRef.current = window.setTimeout(() => {
+            requestedSectionRef.current = null;
+          }, 1200);
+        }
+
+        target.scrollIntoView({ behavior: "smooth" });
+      }
     },
     []
   );
