@@ -218,7 +218,7 @@ export default function Hero() {
       {/* Scroll indicator */}
       <div
         ref={scrollIndicatorRef}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-text-muted"
+        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-text-muted md:flex"
       >
         <span className="text-mono text-xs tracking-widest">Scroll</span>
         <div className="w-px h-10 bg-border relative overflow-hidden">
