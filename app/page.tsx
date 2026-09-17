@@ -37,6 +37,7 @@ export default function Home() {
         <main>
           <Hero />
           <About />
+          <SelectedWork />
           <Services />
           <TechStack />
           <Process />
