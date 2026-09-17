@@ -7,6 +7,17 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+let activeLenis: Lenis | null = null;
+
+export function scrollToElement(target: HTMLElement) {
+  if (activeLenis) {
+    activeLenis.scrollTo(target, { lock: true });
+    return;
+  }
+
+  target.scrollIntoView({ behavior: "smooth" });
+}
+
 export default function SmoothScroll({
   children,
 }: {
@@ -30,6 +41,7 @@ export default function SmoothScroll({
     });
 
     lenisRef.current = lenis;
+    activeLenis = lenis;
 
     // Connect Lenis to GSAP ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
@@ -43,6 +55,7 @@ export default function SmoothScroll({
     return () => {
       lenis.destroy();
       lenisRef.current = null;
+      activeLenis = null;
     };
   }, []);
 

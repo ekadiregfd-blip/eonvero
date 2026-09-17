@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import MagneticButton from "@/components/ui/MagneticButton";
+import { scrollToElement } from "@/components/animations/SmoothScroll";
 import { getCalApi } from "@calcom/embed-react";
 
 const navLinks = [
@@ -154,7 +155,7 @@ export default function Navbar() {
           }, 1200);
         }
 
-        target.scrollIntoView({ behavior: "smooth" });
+        scrollToElement(target as HTMLElement);
       }
     },
     []
