@@ -34,7 +34,15 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState<string>("");
   const navRef = useRef<HTMLElement>(null);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
-  const [indicator, setIndicator] = useState({ left: 0, width: 0, visible: false });
+  const previousSectionRef = useRef<string>("");
+  const requestedSectionRef = useRef<string | null>(null);
+  const requestTimeoutRef = useRef<number | null>(null);
+  const [indicator, setIndicator] = useState({
+    left: 0,
+    width: 0,
+    visible: false,
+    duration: 500,
+  });
 
   // Track active section via IntersectionObserver
   useEffect(() => {
@@ -45,14 +53,20 @@ export default function Navbar() {
 
     if (sectionElements.length === 0) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(`#${entry.target.id}`);
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        const section = `#${entry.target.id}`;
+        if (
+          entry.isIntersecting &&
+          (!requestedSectionRef.current || requestedSectionRef.current === section)
+        ) {
+          setActiveSection(section);
+          if (requestedSectionRef.current === section) {
+            requestedSectionRef.current = null;
           }
-        });
-      },
+        }
+      });
+    },
       {
         rootMargin: "-20% 0px -55% 0px",
         threshold: 0.1,
@@ -60,17 +74,35 @@ export default function Navbar() {
     );
 
     sectionElements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      if (requestTimeoutRef.current) {
+        window.clearTimeout(requestTimeoutRef.current);
+      }
+    };
   }, []);
 
   // Keep one underline mounted so it glides between sections instead of remounting.
   useEffect(() => {
+    const previousIndex = navLinks.findIndex(
+      (link) => link.href === previousSectionRef.current
+    );
+    const activeIndex = navLinks.findIndex(
+      (link) => link.href === activeSection
+    );
+    const isDistantJump =
+      previousIndex >= 0 &&
+      activeIndex >= 0 &&
+      Math.abs(activeIndex - previousIndex) > 1;
+    const duration = isDistantJump ? 0 : 500;
+    previousSectionRef.current = activeSection;
+
     const updateIndicator = () => {
       const nav = navRef.current;
       const activeLink = activeSection ? linkRefs.current[activeSection] : null;
 
       if (!nav || !activeLink) {
-        setIndicator((current) => ({ ...current, visible: false }));
+        setIndicator((current) => ({ ...current, visible: false, duration }));
         return;
       }
 
@@ -80,6 +112,7 @@ export default function Navbar() {
         left: linkBounds.left - navBounds.left,
         width: linkBounds.width,
         visible: true,
+        duration,
       });
     };
 
@@ -100,6 +133,13 @@ export default function Navbar() {
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
       e.preventDefault();
       setActiveSection(href);
+      requestedSectionRef.current = href;
+      if (requestTimeoutRef.current) {
+        window.clearTimeout(requestTimeoutRef.current);
+      }
+      requestTimeoutRef.current = window.setTimeout(() => {
+        requestedSectionRef.current = null;
+      }, 1200);
       setIsMobileOpen(false);
       const target = document.querySelector(href);
       if (target) target.scrollIntoView({ behavior: "smooth" });
@@ -166,6 +206,7 @@ export default function Navbar() {
                 width: `${indicator.width}px`,
                 transform: `translateX(${indicator.left}px)`,
                 opacity: indicator.visible ? 1 : 0,
+                transitionDuration: `${indicator.duration}ms`,
               }}
             />
           </nav>
