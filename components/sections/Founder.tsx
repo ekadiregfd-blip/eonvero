@@ -2,6 +2,7 @@
 
 import ScrollReveal from "@/components/animations/ScrollReveal";
 import TextReveal from "@/components/animations/TextReveal";
+import Image from "next/image";
 
 export default function Founder() {
   return (
@@ -23,11 +24,11 @@ export default function Founder() {
             {/* Portrait Area */}
             <ScrollReveal className="lg:col-span-5" delay={0.1}>
               <div className="relative aspect-[3/4] bg-bg-card rounded-[var(--radius-md)] overflow-hidden group border border-border-subtle">
-                {/* Erdem Kadir vesikalık visual */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src="/images/erdem-kadir-vesikalik.jpg"
                   alt="Erdem Kadir vesikalık"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 42vw"
                   className="absolute inset-0 w-full h-full object-cover object-center grayscale group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
                   loading="lazy"
                 />

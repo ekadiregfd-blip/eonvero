@@ -78,8 +78,6 @@ export const metadata: Metadata = {
   },
 };
 
-import CalComInit from "@/components/ui/CalComInit";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -93,7 +91,6 @@ export default function RootLayout({
     >
       <body>
         <div className="grain-overlay" aria-hidden="true" />
-        <CalComInit />
         {children}
       </body>
     </html>

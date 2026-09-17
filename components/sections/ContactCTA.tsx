@@ -1,7 +1,12 @@
 "use client";
 
 import ScrollReveal from "@/components/animations/ScrollReveal";
-import Cal from "@calcom/embed-react";
+import dynamic from "next/dynamic";
+
+const Cal = dynamic(() => import("@calcom/embed-react"), {
+  ssr: false,
+  loading: () => <div className="h-[600px]" aria-hidden="true" />,
+});
 
 export default function ContactCTA() {
   return (

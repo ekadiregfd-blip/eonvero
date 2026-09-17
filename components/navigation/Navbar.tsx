@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import Image from "next/image";
 import MagneticButton from "@/components/ui/MagneticButton";
 import { scrollToElement } from "@/components/animations/SmoothScroll";
-import { getCalApi } from "@calcom/embed-react";
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -12,6 +12,15 @@ const navLinks = [
   { label: "Process", href: "#process" },
   { label: "Contact", href: "#contact" },
 ];
+
+async function openCalModal() {
+  const { getCalApi } = await import("@calcom/embed-react");
+  const cal = await getCalApi();
+  cal("modal", {
+    calLink: "erdem-kadir/30min",
+    config: { layout: "month_view" },
+  });
+}
 
 /*
  * Navbar Blend Strategy
@@ -180,10 +189,11 @@ export default function Navbar() {
               window.scrollTo({ top: 0, behavior: "smooth" });
             }}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/images/logo-beige.png"
               alt="EONvero Logo"
+              width={300}
+              height={100}
               className="h-16 md:h-24 w-auto object-contain"
             />
           </a>
@@ -237,13 +247,7 @@ export default function Navbar() {
           {/* CTA — opens Cal.com modal */}
           <MagneticButton
             as="button"
-            onClick={async () => {
-              const cal = await getCalApi();
-              cal("modal", {
-                calLink: "erdem-kadir/30min",
-                config: { layout: "month_view" }
-              });
-            }}
+            onClick={() => void openCalModal()}
             className="hidden md:inline-flex btn-primary"
             strength={0.2}
             ariaLabel="Start a project"
@@ -326,13 +330,7 @@ export default function Navbar() {
             }}
           >
             <button
-              onClick={async () => {
-                const cal = await getCalApi();
-                cal("modal", {
-                  calLink: "erdem-kadir/30min",
-                  config: { layout: "month_view" }
-                });
-              }}
+              onClick={() => void openCalModal()}
               className="btn-primary w-fit"
             >
               Start a project

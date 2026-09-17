@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 
 export default function Preloader({ onComplete }: { onComplete: () => void }) {
@@ -114,10 +115,11 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
     >
       {/* Logo */}
       <div ref={logoRef} className="text-center mb-6" style={{ opacity: 0 }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src="/images/logo-white.png"
           alt="EONvero Logo"
+          width={360}
+          height={120}
           className="h-24 md:h-32 w-auto object-contain mx-auto notranslate"
           translate="no"
         />

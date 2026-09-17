@@ -3,6 +3,7 @@
 import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Image from "next/image";
 import { projects } from "@/data/projects";
 import ScrollReveal from "@/components/animations/ScrollReveal";
 import TextReveal from "@/components/animations/TextReveal";
@@ -59,12 +60,12 @@ function ProjectCard({
             </span>
           </div>
 
-          {/* Project image */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={project.image}
             alt={`${project.title} — ${project.category}`}
-            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+            fill
+            sizes="(max-width: 1024px) 100vw, 58vw"
+            className="object-cover group-hover:scale-105 transition-transform duration-700"
             loading="lazy"
           />
 
