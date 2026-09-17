@@ -99,6 +99,7 @@ export default function Navbar() {
   const handleNavClick = useCallback(
     (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
       e.preventDefault();
+      setActiveSection(href);
       setIsMobileOpen(false);
       const target = document.querySelector(href);
       if (target) target.scrollIntoView({ behavior: "smooth" });
