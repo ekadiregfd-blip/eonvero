@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import MagneticButton from "@/components/ui/MagneticButton";
 import { getCalApi } from "@calcom/embed-react";
 
@@ -32,6 +32,9 @@ const navLinks = [
 export default function Navbar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>("");
+  const navRef = useRef<HTMLElement>(null);
+  const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
+  const [indicator, setIndicator] = useState({ left: 0, width: 0, visible: false });
 
   // Track active section via IntersectionObserver
   useEffect(() => {
@@ -59,6 +62,33 @@ export default function Navbar() {
     sectionElements.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
   }, []);
+
+  // Keep one underline mounted so it glides between sections instead of remounting.
+  useEffect(() => {
+    const updateIndicator = () => {
+      const nav = navRef.current;
+      const activeLink = activeSection ? linkRefs.current[activeSection] : null;
+
+      if (!nav || !activeLink) {
+        setIndicator((current) => ({ ...current, visible: false }));
+        return;
+      }
+
+      const navBounds = nav.getBoundingClientRect();
+      const linkBounds = activeLink.getBoundingClientRect();
+      setIndicator({
+        left: linkBounds.left - navBounds.left,
+        width: linkBounds.width,
+        visible: true,
+      });
+    };
+
+    updateIndicator();
+    const resizeObserver = new ResizeObserver(updateIndicator);
+    if (navRef.current) resizeObserver.observe(navRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, [activeSection]);
 
   // Lock body scroll when mobile menu is open
   useEffect(() => {
@@ -105,7 +135,8 @@ export default function Navbar() {
 
           {/* Desktop Nav */}
           <nav
-            className="hidden lg:flex items-center gap-8 notranslate"
+            ref={navRef}
+            className="hidden lg:flex items-center gap-8 notranslate relative"
             translate="no"
             aria-label="Primary navigation"
           >
@@ -116,17 +147,26 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={(e) => handleNavClick(e, link.href)}
+                  ref={(element) => {
+                    linkRefs.current[link.href] = element;
+                  }}
                   className={`link-hover text-small font-medium transition-colors duration-300 tracking-widest uppercase relative ${
                     isActive ? "text-[#e3dbc5] font-semibold" : "text-[#e3dbc5] hover:text-[#e3dbc5]/80"
                   }`}
                 >
                   {link.label}
-                  {isActive && (
-                    <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#e3dbc5] transition-all duration-300" />
-                  )}
                 </a>
               );
             })}
+            <span
+              aria-hidden="true"
+              className="absolute -bottom-1 left-0 h-[2px] bg-[#e3dbc5] transition-[transform,width,opacity] duration-500 ease-[var(--ease-expo)]"
+              style={{
+                width: `${indicator.width}px`,
+                transform: `translateX(${indicator.left}px)`,
+                opacity: indicator.visible ? 1 : 0,
+              }}
+            />
           </nav>
 
           {/* Empty spacer for alignment with right side CTA button */}
