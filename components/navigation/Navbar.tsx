@@ -302,6 +302,8 @@ export default function Navbar() {
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation menu"
+        aria-hidden={!isMobileOpen}
+        inert={!isMobileOpen}
       >
         <nav className="flex flex-col justify-center items-start h-full px-[var(--grid-margin)] gap-2">
           {navLinks.map((link, i) => (

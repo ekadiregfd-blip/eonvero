@@ -69,27 +69,25 @@ export default function Process() {
     ).matches;
     if (prefersReducedMotion || !sectionRef.current || !progressRef.current) return;
 
-    // Animate progress line as section scrolls
-    gsap.fromTo(
-      progressRef.current,
-      { scaleY: 0 },
-      {
-        scaleY: 1,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 60%",
-          end: "bottom 40%",
-          scrub: 1,
-        },
-      }
-    );
+    const context = gsap.context(() => {
+      // Animate progress line as section scrolls
+      gsap.fromTo(
+        progressRef.current,
+        { scaleY: 0 },
+        {
+          scaleY: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 60%",
+            end: "bottom 40%",
+            scrub: 1,
+          },
+        }
+      );
+    }, sectionRef);
 
-    return () => {
-      ScrollTrigger.getAll().forEach((t) => {
-        if (t.vars.trigger === sectionRef.current) t.kill();
-      });
-    };
+    return () => context.revert();
   }, []);
 
   return (
@@ -110,7 +108,7 @@ export default function Process() {
 
           <div className="max-w-4xl mb-16 md:mb-24">
             <ScrollReveal>
-              <h2 className="text-h2 text-text-primary leading-tight">
+              <h2 id="process-heading" className="text-h2 text-text-primary leading-tight">
                 Simple process. Exceptional results.
               </h2>
             </ScrollReveal>

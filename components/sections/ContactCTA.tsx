@@ -26,7 +26,7 @@ export default function ContactCTA() {
 
           <div className="mb-16 md:mb-24">
             <ScrollReveal>
-              <h2 className="text-h1 text-text-primary mb-4 leading-tight">
+              <h2 id="contact-heading" className="text-h1 text-text-primary mb-4 leading-tight">
                 Have an idea?
               </h2>
               <p className="text-h2 text-text-primary leading-tight opacity-90">

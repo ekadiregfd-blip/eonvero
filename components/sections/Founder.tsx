@@ -52,7 +52,7 @@ export default function Founder() {
             <div className="lg:col-span-6 lg:col-start-7 flex flex-col justify-center">
               <ScrollReveal>
                 <div className="mb-8">
-                  <h2 className="text-h2 font-[family-name:var(--font-display)] font-bold text-text-primary tracking-tight uppercase">
+                  <h2 id="founder-heading" className="text-h2 font-[family-name:var(--font-display)] font-bold text-text-primary tracking-tight uppercase">
                     Code<span className="text-accent">.</span> Create<span className="text-accent">.</span> Evolve<span className="text-accent">.</span>
                   </h2>
                 </div>

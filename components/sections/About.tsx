@@ -18,7 +18,7 @@ export default function About() {
           {/* Main Statement */}
           <div className="max-w-5xl mb-16 md:mb-24">
             <ScrollReveal>
-              <h2 className="text-h2 text-text-primary mb-6 leading-tight">
+              <h2 id="about-heading" className="text-h2 text-text-primary mb-6 leading-tight">
                 Built from curiosity. Driven by code. Made for the web.
               </h2>
             </ScrollReveal>

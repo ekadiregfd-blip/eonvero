@@ -25,7 +25,7 @@ export default function FAQ() {
 
           <div className="max-w-4xl mb-16 md:mb-24">
             <ScrollReveal>
-              <h2 className="text-h2 text-text-primary leading-tight">
+              <h2 id="faq-heading" className="text-h2 text-text-primary leading-tight">
                 Common questions, honest answers.
               </h2>
             </ScrollReveal>

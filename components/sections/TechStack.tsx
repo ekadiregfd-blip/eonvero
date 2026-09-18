@@ -22,7 +22,7 @@ export default function TechStack() {
 
           <div className="max-w-4xl mb-16 md:mb-24">
             <ScrollReveal>
-              <h2 className="text-h2 text-text-primary leading-tight">
+              <h2 id="tech-heading" className="text-h2 text-text-primary leading-tight">
                 The tools behind the craft.
               </h2>
             </ScrollReveal>

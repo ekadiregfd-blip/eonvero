@@ -166,7 +166,7 @@ export default function SelectedWork() {
 
           <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 md:mb-24">
             <ScrollReveal>
-              <h2 className="text-h2 text-text-primary leading-tight">
+              <h2 id="work-heading" className="text-h2 text-text-primary leading-tight">
                 Projects built with purpose and precision.
               </h2>
             </ScrollReveal>

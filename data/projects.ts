@@ -59,7 +59,6 @@ export const projects: Project[] = [
       "A high-conversion landing page with scroll-driven storytelling, micro-interactions, and performance-optimized animations. Designed to captivate visitors within the first three seconds.",
     technologies: ["Next.js", "GSAP", "Tailwind CSS", "Framer Motion"],
     image: "/images/projects/nexus.jpg",
-    live: "https://example.com",
     featured: true,
     color: "#1a0a2e",
   },
